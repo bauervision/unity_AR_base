@@ -18,10 +18,11 @@ So it is recommended to use Unity 2019.3.3f1.
 ## Build the app
 Now that you have the updated template copied into your project, there is a couple of small things to tidy up.
 
-### Prep
+### Prep work
 * Open Build Settings / Player Settings 
 * Player ->  set your Company values, and icon
 * Player / Icon / Adaptive -> set your icon
+* Player / Other Settings / Identification -> set your own package name, just clear out `BauerVision.ARBase` and set your own. Be sure to leave the `com.` so for ex, `com.MyCompany.MyAppName`
 
 ### Deploy
 Now you can Build your apk.
