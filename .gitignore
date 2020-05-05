@@ -1,0 +1,10 @@
+#Ignore all .meta file
+*.asset.meta
+*.asset
+*.meta
+*.mat.meta
+#But not source file with postfix. which is everything but a folder
+UnityLockfile
+UnityTempfile*
+[Ll]ibrary/
+Temp/
