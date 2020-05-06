@@ -598,6 +598,10 @@
       <Project>{ec976266-d8fd-7c79-a259-360a188ed60f}</Project>
       <Name>Unity.XR.ARCore</Name>
     </ProjectReference>
+    <ProjectReference Include="Unity.XR.InteractionSubsystems.csproj">
+      <Project>{c95a1a0b-b890-e98a-3189-b87e4194a11b}</Project>
+      <Name>Unity.XR.InteractionSubsystems</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.XR.ARFoundation.Editor.csproj">
       <Project>{884f23d1-f8fa-082a-5b85-60a547c5e27f}</Project>
       <Name>Unity.XR.ARFoundation.Editor</Name>
@@ -642,9 +646,17 @@
       <Project>{09783c36-e469-7e0b-7933-e18837a4318f}</Project>
       <Name>UnityEditor.SpatialTracking</Name>
     </ProjectReference>
+    <ProjectReference Include="Unity.XR.Management.Samples.csproj">
+      <Project>{b30ddb41-428a-0b0c-5e89-d80c8198cb22}</Project>
+      <Name>Unity.XR.Management.Samples</Name>
+    </ProjectReference>
     <ProjectReference Include="UnityEngine.SpatialTracking.csproj">
       <Project>{94e60ffc-9b1d-eeba-3230-19eb8bbf8445}</Project>
       <Name>UnityEngine.SpatialTracking</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.XR.Management.Samples.Editor.csproj">
+      <Project>{4ca6d371-7ae2-92e1-7b31-68979f6bf02c}</Project>
+      <Name>Unity.XR.Management.Samples.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.TextMeshPro.csproj">
       <Project>{17a99f83-45ba-7c6f-af9a-a1147dd6f74c}</Project>
