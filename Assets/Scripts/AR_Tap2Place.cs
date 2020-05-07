@@ -62,6 +62,7 @@ public class AR_Tap2Place : MonoBehaviour
     {
         foreach (AR_Object obj in allObjects)
         {
+            Debug.Log("Destroy" + allObjects.Count);
             Destroy(obj);
         }
         allObjects.Clear();
@@ -113,7 +114,6 @@ public class AR_Tap2Place : MonoBehaviour
         // store each obj we create into a list
         AR_Object aro = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
         allObjects.Add(aro);
-        Debug.Log("Spawned new Object" + allObjects.Count);
     }
 
     private void UpdatePlacementIndicator()
