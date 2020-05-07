@@ -570,10 +570,6 @@
  </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{a94f2cd8-034d-72a4-0861-13e1419c5c2c}</Project>
-      <Name>Assembly-CSharp-firstpass</Name>
-    </ProjectReference>
     <ProjectReference Include="Unity.XR.Management.csproj">
       <Project>{2c60d529-9617-2b23-1345-89c90b934be3}</Project>
       <Name>Unity.XR.Management</Name>
