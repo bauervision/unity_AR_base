@@ -8,16 +8,37 @@ using UnityEngine.XR.ARSubsystems;
 
 public class AR_Tap2Place : MonoBehaviour
 {
+    [SerializeField]
+    [Tooltip("Shown when a surface has been detected as the orgin for spawning")]
+    private GameObject placementIndicator;
 
-    public GameObject placementIndicator;
-    public GameObject objectToPlace;
+    [SerializeField]
+    [Tooltip("Mesh to spawn on surface")]
+    private AR_Object objectToPlace;
+
+    [SerializeField]
+    [Tooltip("UI Element to target for updates")]
     public Text countText;
 
-    List<GameObject> allObjects = new List<GameObject>();
+
+    [SerializeField]
+    [Tooltip("Active Color for Selected Objects")]
+    private Color activeColor = Color.blue;
+
+    [SerializeField]
+    [Tooltip("InActive Color for De-Selected Objects")]
+    private Color inActiveColor = Color.red;
+
+    [SerializeField]
+    [Tooltip("Camera to use for ray casting")]
+    private Camera AR_Camera = default;
+
+    List<AR_Object> allObjects = new List<AR_Object>();
 
     private ARSessionOrigin arOrigin;
     private Pose placementPose;
     private bool validPlacementPose = false;
+    private Vector2 touchPosition = default;
 
     // Start is called before the first frame update
     void Start()
@@ -30,10 +51,7 @@ public class AR_Tap2Place : MonoBehaviour
     {
         UpdatePlacementPose();
         UpdatePlacementIndicator();
-        if (validPlacementPose && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-        {
-            PlaceObject();
-        }
+        HandleSelectionDetection();
 
         // keep our counter updated with list total
         countText.text = "Number of Objects in scene: " + allObjects.Count;
@@ -42,7 +60,7 @@ public class AR_Tap2Place : MonoBehaviour
     // called from the UI button
     public void ClearScene()
     {
-        foreach (GameObject obj in allObjects)
+        foreach (AR_Object obj in allObjects)
         {
             Destroy(obj);
         }
@@ -50,11 +68,52 @@ public class AR_Tap2Place : MonoBehaviour
 
     }
 
+    private void HandleSelectionDetection()
+    {
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            touchPosition = touch.position;
+
+            if (touch.phase == TouchPhase.Began)
+            {
+                Ray ray = AR_Camera.ScreenPointToRay(touch.position);
+                RaycastHit hitObject;
+
+
+                if (Physics.Raycast(ray, out hitObject))
+                {
+                    AR_Object placementObj = hitObject.transform.GetComponent<AR_Object>();
+                    if (placementObj != null)
+                    {
+                        ChangeSelection(placementObj);
+                    }
+                    else
+                    {
+                        PlaceObject();
+                    }
+                }
+            }
+
+        }
+    }
+
+    private void ChangeSelection(AR_Object selected)
+    {
+        foreach (AR_Object obj in allObjects)
+        {
+            MeshRenderer meshRenderer = obj.GetComponent<MeshRenderer>();
+            obj.IsSelected = (selected != obj);
+            meshRenderer.material.color = (selected != obj) ? inActiveColor : activeColor;
+        }
+    }
+
     private void PlaceObject()
     {
         // store each obj we create into a list
-        GameObject go = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
-        allObjects.Add(go);
+        AR_Object aro = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
+        allObjects.Add(aro);
+        Debug.Log("Spawned new Object" + allObjects.Count);
     }
 
     private void UpdatePlacementIndicator()
@@ -67,7 +126,7 @@ public class AR_Tap2Place : MonoBehaviour
         // make sure we have a place to register as ground zero for the indicator
         if (validPlacementPose)
         {
-            Debug.Log("Valid Placement Pose, enable indicator");
+
             // we do so enable it
             placementIndicator.SetActive(true);
             // and update its position and rotation

@@ -3218,9 +3218,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   placementIndicator: {fileID: 223974226}
-  objectToPlace: {fileID: 2939256160100110117, guid: 8565296c5de18e0409e30fa663f43c95,
+  objectToPlace: {fileID: 8069990457390260368, guid: 8565296c5de18e0409e30fa663f43c95,
     type: 3}
   countText: {fileID: 2042547985}
+  activeColor: {r: 0, g: 0, b: 1, a: 1}
+  inActiveColor: {r: 1, g: 0, b: 0, a: 1}
+  AR_Camera: {fileID: 1482814301}
 --- !u!4 &1833772985
 Transform:
   m_ObjectHideFlags: 0
