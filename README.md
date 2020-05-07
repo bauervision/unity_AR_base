@@ -27,5 +27,16 @@ Now that you have the updated template copied into your project, there is a coup
 ### Deploy
 Now you can Build your apk.
 
-Build Settings -> Build.
+#### APK
+Build Settings -> Build. If you just want to push out the apk.
+
+#### Debugging
+If you want to see your real time debugging inside of Unity's console:
+
+* VSCode -> Set the debugger to the Unity Editor, this will create the launch.json that you need
+* Unity -> Build Settings -> Enable Development Build, and Script Debugging for Android
+* Build and Run.  This will then search for compatible devices ( make sure yours is connected at this point ), and will launch the file directly on your device.
+* In order to see your logs inside of Unity, you need to switch the Console target from Editor to your connected Android device.
+
+> Of course, place your Debug.Logs() where desired :)
 
