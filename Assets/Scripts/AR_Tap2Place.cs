@@ -7,11 +7,13 @@ using UnityEngine.UI;
 
 public class AR_Tap2Place : MonoBehaviour
 {
+
     public GameObject placementIndicator;
     public GameObject objectToPlace;
     public Text countText;
 
     List<GameObject> allObjects = new List<GameObject>();
+
 
     private ARSessionOrigin arOrigin;
     private Pose placementPose;

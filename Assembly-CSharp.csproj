@@ -598,10 +598,6 @@
       <Project>{ec976266-d8fd-7c79-a259-360a188ed60f}</Project>
       <Name>Unity.XR.ARCore</Name>
     </ProjectReference>
-    <ProjectReference Include="Unity.XR.InteractionSubsystems.csproj">
-      <Project>{c95a1a0b-b890-e98a-3189-b87e4194a11b}</Project>
-      <Name>Unity.XR.InteractionSubsystems</Name>
-    </ProjectReference>
     <ProjectReference Include="Unity.XR.ARFoundation.Editor.csproj">
       <Project>{884f23d1-f8fa-082a-5b85-60a547c5e27f}</Project>
       <Name>Unity.XR.ARFoundation.Editor</Name>
