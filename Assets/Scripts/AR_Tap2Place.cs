@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.Experimental.XR;
 using UnityEngine.UI;
+using UnityEngine.XR.ARSubsystems;
 
 public class AR_Tap2Place : MonoBehaviour
 {
@@ -13,7 +14,6 @@ public class AR_Tap2Place : MonoBehaviour
     public Text countText;
 
     List<GameObject> allObjects = new List<GameObject>();
-
 
     private ARSessionOrigin arOrigin;
     private Pose placementPose;
@@ -67,6 +67,7 @@ public class AR_Tap2Place : MonoBehaviour
         // make sure we have a place to register as ground zero for the indicator
         if (validPlacementPose)
         {
+            Debug.Log("Valid Placement Pose, enable indicator");
             // we do so enable it
             placementIndicator.SetActive(true);
             // and update its position and rotation
@@ -87,7 +88,7 @@ public class AR_Tap2Place : MonoBehaviour
         // store what we've hit
         var hits = new List<ARRaycastHit>();
         // perform the raycast
-        arOrigin.GetComponent<ARRaycastManager>().Raycast(screenCenter, hits, UnityEngine.XR.ARSubsystems.TrackableType.Planes);
+        arOrigin.GetComponent<ARRaycastManager>().Raycast(screenCenter, hits, TrackableType.PlaneWithinPolygon);
 
         /* now, once we have successfully stored a hit, we need to turn on the indicator
         so we can see the plane of where we hit,  we'll track that with validPlacementPose */
@@ -104,4 +105,7 @@ public class AR_Tap2Place : MonoBehaviour
             placementPose.rotation = Quaternion.LookRotation(cameraBearing);
         }
     }
+
+
+
 }
