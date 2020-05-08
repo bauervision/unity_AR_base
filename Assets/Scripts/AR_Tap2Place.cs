@@ -14,7 +14,7 @@ public class AR_Tap2Place : MonoBehaviour
 
     [SerializeField]
     [Tooltip("Mesh to spawn on surface")]
-    private AR_Object objectToPlace;
+    private GameObject objectToPlace;
 
     [SerializeField]
     [Tooltip("UI Element to target for updates")]
@@ -33,7 +33,7 @@ public class AR_Tap2Place : MonoBehaviour
     [Tooltip("Camera to use for ray casting")]
     private Camera AR_Camera = default;
 
-    List<AR_Object> allObjects = new List<AR_Object>();
+    List<GameObject> allObjects = new List<GameObject>();
 
     private ARSessionOrigin arOrigin;
     private Pose placementPose;
@@ -60,7 +60,7 @@ public class AR_Tap2Place : MonoBehaviour
     // called from the UI button
     public void ClearScene()
     {
-        foreach (AR_Object obj in allObjects)
+        foreach (GameObject obj in allObjects)
         {
             Debug.Log("Destroy" + allObjects.Count);
             Destroy(obj);
@@ -84,7 +84,7 @@ public class AR_Tap2Place : MonoBehaviour
 
                 if (Physics.Raycast(ray, out hitObject))
                 {
-                    AR_Object placementObj = hitObject.transform.GetComponent<AR_Object>();
+                    GameObject placementObj = hitObject.transform.gameObject;
                     if (placementObj != null)
                     {
                         ChangeSelection(placementObj);
@@ -99,12 +99,11 @@ public class AR_Tap2Place : MonoBehaviour
         }
     }
 
-    private void ChangeSelection(AR_Object selected)
+    private void ChangeSelection(GameObject selected)
     {
-        foreach (AR_Object obj in allObjects)
+        foreach (GameObject obj in allObjects)
         {
             MeshRenderer meshRenderer = obj.GetComponent<MeshRenderer>();
-            obj.IsSelected = (selected != obj);
             meshRenderer.material.color = (selected != obj) ? inActiveColor : activeColor;
         }
     }
@@ -112,7 +111,7 @@ public class AR_Tap2Place : MonoBehaviour
     private void PlaceObject()
     {
         // store each obj we create into a list
-        AR_Object aro = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
+        GameObject aro = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
         allObjects.Add(aro);
     }
 
