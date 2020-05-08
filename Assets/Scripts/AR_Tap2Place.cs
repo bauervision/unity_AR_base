@@ -89,6 +89,7 @@ public class AR_Tap2Place : MonoBehaviour
                     if (placementObj != null)
                     {
                         ChangeSelection(placementObj);
+                        HandleSelectionEvent(placementObj);
                     }
                     else
                     {
@@ -166,9 +167,9 @@ public class AR_Tap2Place : MonoBehaviour
     }
 
 
-    public void HandleSelectionEvent()
+    public void HandleSelectionEvent(AR_Object selectedObj)
     {
-        Debug.Log("HandleSelectionEvent called")
+        Debug.Log("HandleSelectionEvent called");
     }
 
 
