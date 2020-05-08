@@ -641,7 +641,6 @@ GameObject:
   - component: {fileID: 1482814304}
   - component: {fileID: 1482814303}
   - component: {fileID: 1482814302}
-  - component: {fileID: 1482814306}
   m_Layer: 0
   m_Name: AR Camera
   m_TagString: MainCamera
@@ -754,18 +753,6 @@ Transform:
   m_Father: {fileID: 1813233807}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1482814306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1482814300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68a076e7dedf4411b96ca259dc65ce59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1813233805
 GameObject:
   m_ObjectHideFlags: 0
@@ -870,7 +857,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   placementIndicator: {fileID: 223974226}
-  objectToPlace: {fileID: 2939256160100110117, guid: 8565296c5de18e0409e30fa663f43c95,
+  objectToPlace: {fileID: 7439106074363962752, guid: 8565296c5de18e0409e30fa663f43c95,
     type: 3}
   countText: {fileID: 2042547985}
   activeColor: {r: 0, g: 0, b: 1, a: 1}

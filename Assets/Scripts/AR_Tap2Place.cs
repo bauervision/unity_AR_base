@@ -14,7 +14,7 @@ public class AR_Tap2Place : MonoBehaviour
 
     [SerializeField]
     [Tooltip("Mesh to spawn on surface")]
-    private GameObject objectToPlace;
+    private AR_Object objectToPlace;
 
     [SerializeField]
     [Tooltip("UI Element to target for updates")]
@@ -33,7 +33,7 @@ public class AR_Tap2Place : MonoBehaviour
     [Tooltip("Camera to use for ray casting")]
     private Camera AR_Camera = default;
 
-    List<GameObject> allObjects = new List<GameObject>();
+    List<AR_Object> allObjects = new List<AR_Object>();
 
     private ARSessionOrigin arOrigin;
     private Pose placementPose;
@@ -44,6 +44,7 @@ public class AR_Tap2Place : MonoBehaviour
     void Start()
     {
         arOrigin = FindObjectOfType<ARSessionOrigin>();
+        Debug.Log("arOrigin" + arOrigin);
     }
 
     // Update is called once per frame
@@ -60,10 +61,10 @@ public class AR_Tap2Place : MonoBehaviour
     // called from the UI button
     public void ClearScene()
     {
-        foreach (GameObject obj in allObjects)
+        foreach (AR_Object obj in allObjects)
         {
             Debug.Log("Destroy" + allObjects.Count);
-            Destroy(obj);
+            Destroy(obj.transform.gameObject);
         }
         allObjects.Clear();
 
@@ -84,7 +85,7 @@ public class AR_Tap2Place : MonoBehaviour
 
                 if (Physics.Raycast(ray, out hitObject))
                 {
-                    GameObject placementObj = hitObject.transform.gameObject;
+                    AR_Object placementObj = hitObject.transform.GetComponent<AR_Object>();
                     if (placementObj != null)
                     {
                         ChangeSelection(placementObj);
@@ -99,9 +100,9 @@ public class AR_Tap2Place : MonoBehaviour
         }
     }
 
-    private void ChangeSelection(GameObject selected)
+    private void ChangeSelection(AR_Object selected)
     {
-        foreach (GameObject obj in allObjects)
+        foreach (AR_Object obj in allObjects)
         {
             MeshRenderer meshRenderer = obj.GetComponent<MeshRenderer>();
             meshRenderer.material.color = (selected != obj) ? inActiveColor : activeColor;
@@ -111,7 +112,7 @@ public class AR_Tap2Place : MonoBehaviour
     private void PlaceObject()
     {
         // store each obj we create into a list
-        GameObject aro = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
+        AR_Object aro = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
         allObjects.Add(aro);
     }
 
@@ -164,6 +165,11 @@ public class AR_Tap2Place : MonoBehaviour
         }
     }
 
+
+    public void HandleSelectionEvent()
+    {
+        Debug.Log("HandleSelectionEvent called")
+    }
 
 
 }
