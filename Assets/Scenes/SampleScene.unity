@@ -839,7 +839,7 @@ GameObject:
   - component: {fileID: 1833772984}
   - component: {fileID: 1833772986}
   m_Layer: 0
-  m_Name: Interactions
+  m_Name: InteractionManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -864,6 +864,8 @@ MonoBehaviour:
   activeColor: {r: 0, g: 0, b: 1, a: 1}
   inActiveColor: {r: 1, g: 0.6261432, b: 0, a: 1}
   AR_Camera: {fileID: 1482814301}
+  isSingleSpawn: 1
+  deletePrevious: 0
 --- !u!4 &1833772985
 Transform:
   m_ObjectHideFlags: 0

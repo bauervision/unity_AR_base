@@ -33,12 +33,22 @@ public class AR_Tap2Place : MonoBehaviour
     [Tooltip("Camera to use for ray casting")]
     private Camera AR_Camera = default;
 
+    [SerializeField]
+    [Tooltip("Do we limit spawning to a single mesh?")]
+    private bool isSingleSpawn = false;
+
+    [SerializeField]
+    [Tooltip("Do we destroy the previous mesh with each spawn?")]
+    private bool deletePrevious = false;
+
     List<AR_Object> allObjects = new List<AR_Object>();
 
     private ARSessionOrigin arOrigin;
     private Pose placementPose;
     private bool validPlacementPose = false;
     private Vector2 touchPosition = default;
+
+    private AR_Object singleMesh;
 
     // Start is called before the first frame update
     void Start()
@@ -112,14 +122,39 @@ public class AR_Tap2Place : MonoBehaviour
 
     private void PlaceObject()
     {
-        // store each obj we create into a list
-        AR_Object aro = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
-        allObjects.Add(aro);
+        // do we want to limit the spawning to a single instance?
+        if (isSingleSpawn)
+        {
+            // check to see if we have spawned our single mesh
+            if (singleMesh == null)
+            {
+                singleMesh = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
+                // make sure we still count this mesh, so we can select and delete it
+                allObjects.Add(singleMesh);
+            }
+        }
+        else
+        {
+            // check to see if we want to delete the previous with each spawn
+            if (deletePrevious)
+            {
+                // make sure we have set an obj first
+                if (allObjects.Count == 1)
+                {
+                    Destroy(allObjects[0].transform.gameObject);
+                    allObjects.Clear();
+                }
+            }
+            // store each obj we create into a list
+            AR_Object aro = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
+            allObjects.Add(aro);
+            Debug.Log("Creating new object");
+        }
+
     }
 
     private void UpdatePlacementIndicator()
     {
-
         /*  because the indicator doesn't get spawned, but rather sits active in the scene, we need to handle
             when we will hide and show it
             */
@@ -127,7 +162,6 @@ public class AR_Tap2Place : MonoBehaviour
         // make sure we have a place to register as ground zero for the indicator
         if (validPlacementPose)
         {
-
             // we do so enable it
             placementIndicator.SetActive(true);
             // and update its position and rotation
@@ -171,6 +205,8 @@ public class AR_Tap2Place : MonoBehaviour
     {
         Debug.Log("HandleSelectionEvent called");
     }
+
+
 
 
 }
