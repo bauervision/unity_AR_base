@@ -20,6 +20,10 @@ public class AR_Tap2Place : MonoBehaviour
     [Tooltip("UI Element to target for updates")]
     public Text countText;
 
+    [SerializeField]
+    [Tooltip("UI Element to target for object description display")]
+    public Text descriptionText;
+
 
     [SerializeField]
     [Tooltip("Active Color for Selected Objects")]
@@ -50,11 +54,16 @@ public class AR_Tap2Place : MonoBehaviour
 
     private AR_Object singleMesh;
 
+    private string[] objList = new string[] { "Matt", "Joanne", "Robert" };
+
     // Start is called before the first frame update
     void Start()
     {
         arOrigin = FindObjectOfType<ARSessionOrigin>();
         Debug.Log("arOrigin" + arOrigin);
+        // clear out all the UI text fields
+        descriptionText.text = "";
+        countText.text = "";
     }
 
     // Update is called once per frame
@@ -64,8 +73,12 @@ public class AR_Tap2Place : MonoBehaviour
         UpdatePlacementIndicator();
         HandleSelectionDetection();
 
-        // keep our counter updated with list total
-        countText.text = "Number of Objects in scene: " + allObjects.Count;
+        // keep our counter updated with list total once we have something to count
+        if (allObjects.Count != 0)
+        {
+            countText.text = "Number of Objects in scene: " + allObjects.Count;
+        }
+
     }
 
     // called from the UI button
@@ -115,10 +128,19 @@ public class AR_Tap2Place : MonoBehaviour
     {
         foreach (AR_Object obj in allObjects)
         {
+            // change the color of the selected object
             MeshRenderer meshRenderer = obj.GetComponent<MeshRenderer>();
+            // if we have found our selected obj
+            if (selected == obj)
+            {
+                // set the UI text to this objects description
+                descriptionText.text = obj.Description;
+            }
+            // handle color changing
             meshRenderer.material.color = (selected != obj) ? inActiveColor : activeColor;
         }
     }
+
 
     private void PlaceObject()
     {
@@ -129,6 +151,7 @@ public class AR_Tap2Place : MonoBehaviour
             if (singleMesh == null)
             {
                 singleMesh = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
+
                 // make sure we still count this mesh, so we can select and delete it
                 allObjects.Add(singleMesh);
             }
@@ -147,6 +170,9 @@ public class AR_Tap2Place : MonoBehaviour
             }
             // store each obj we create into a list
             AR_Object aro = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
+
+            // set the description of this object, with a default value once we run past our name list
+            aro.Description = (allObjects.Count <= objList.Length) ? objList[allObjects.Count] : "Default";
             allObjects.Add(aro);
             Debug.Log("Creating new object");
         }
