@@ -54,8 +54,10 @@ public class AR_Tap2Place : MonoBehaviour
 
     private AR_Object singleMesh;
 
+    private bool onTouchHold = false;
     private string[] objList = new string[] { "Matt", "Joanne", "Robert" };
 
+    public GameObject holdText;
     // Start is called before the first frame update
     void Start()
     {
@@ -64,7 +66,13 @@ public class AR_Tap2Place : MonoBehaviour
         // clear out all the UI text fields
         descriptionText.text = "";
         countText.text = "";
+        holdText = GameObject.Find("Hold");
+        holdText.SetActive(false);
+
+
+
     }
+
 
     // Update is called once per frame
     void Update()
@@ -78,6 +86,9 @@ public class AR_Tap2Place : MonoBehaviour
         {
             countText.text = "Number of Objects in scene: " + allObjects.Count;
         }
+
+
+        holdText.SetActive(onTouchHold);
 
     }
 
@@ -121,7 +132,18 @@ public class AR_Tap2Place : MonoBehaviour
                 }
             }
 
+            if (touch.phase == TouchPhase.Ended)
+            {
+                onTouchHold = false;
+            }
+
         }
+    }
+
+
+    private void handleDragging()
+    {
+
     }
 
     private void ChangeSelection(AR_Object selected)
@@ -133,6 +155,7 @@ public class AR_Tap2Place : MonoBehaviour
             // if we have found our selected obj
             if (selected == obj)
             {
+                onTouchHold = true;
                 // set the UI text to this objects description
                 descriptionText.text = obj.Description;
             }
