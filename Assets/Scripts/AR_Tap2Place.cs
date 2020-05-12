@@ -21,8 +21,14 @@ public class AR_Tap2Place : MonoBehaviour
     public Text countText;
 
     [SerializeField]
-    [Tooltip("UI Element to target for object description display")]
-    public Text descriptionText;
+    [Tooltip("UI Element to target for object ID display")]
+    public Text idText;
+    [SerializeField]
+    [Tooltip("UI Element to target for object NAME display")]
+    public Text nameText;
+    [SerializeField]
+    [Tooltip("UI Element to target for object AGE display")]
+    public Text ageText;
 
 
     [SerializeField]
@@ -47,9 +53,15 @@ public class AR_Tap2Place : MonoBehaviour
 
     /*  ================================================  */
 
+    [System.Serializable]
+    public class JsonDataRaw
+    {
+        public List<ObjectList> objects;
+    }
+
 
     [System.Serializable]
-    public class jsonObject
+    public class ObjectList
     {
         public int id;
         public string name;
@@ -57,6 +69,7 @@ public class AR_Tap2Place : MonoBehaviour
     }
 
 
+    private JsonDataRaw jData;
     /*  ================================================  */
     List<AR_Object> allObjects = new List<AR_Object>();
 
@@ -72,7 +85,7 @@ public class AR_Tap2Place : MonoBehaviour
     private AR_Object selectedObject;
 
     private bool onTouchHold = false;
-    private List<jsonObject> objList;
+    private List<ObjectList> objList;
 
     public GameObject holdText;
     // Start is called before the first frame update
@@ -80,26 +93,25 @@ public class AR_Tap2Place : MonoBehaviour
     {
         arOrigin = FindObjectOfType<ARSessionOrigin>();
         // clear out all the UI text fields
-        descriptionText.text = "";
         countText.text = "";
 
         // setup fetch
-        StartCoroutine(GetRequest("https://my-json-server.typicode.com/bauervision/unity_AR_base/objects"));
+        StartCoroutine(GetRequest("https://my-json-server.typicode.com/bauervision/unity_AR_base/data"));
 
 
         // testing
         // holdText = GameObject.Find("Hold");
-        // holdText.SetActive(false);
+        // holdText.GetComponent<Text>().text = jData.objectList[0].name;
     }
 
-    IEnumerator GetRequest(string uri)
+    IEnumerator GetRequest(string url)
     {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
         {
             // Request and wait for the desired page.
             yield return webRequest.SendWebRequest();
 
-            string[] pages = uri.Split('/');
+            string[] pages = url.Split('/');
             int page = pages.Length - 1;
 
             if (webRequest.isNetworkError)
@@ -109,14 +121,7 @@ public class AR_Tap2Place : MonoBehaviour
             else
             {
                 var data = webRequest.downloadHandler.text;
-                Debug.Log(" data: " + data[1]);
-
-
-                //    for (int i = 0; i < data; i++)
-                //     {
-                //         objList.Add(data[i]);
-                //     }
-                //     Debug.Log(" data: " + objList);
+                jData = JsonUtility.FromJson<JsonDataRaw>(data);
 
             }
         }
@@ -219,8 +224,10 @@ public class AR_Tap2Place : MonoBehaviour
                 onTouchHold = true;
                 selectedObject = obj;
 
-                // set the UI text to this objects description
-                descriptionText.text = obj.Description;
+                // set the UI text to this objects data
+                idText.text = obj.id.ToString();
+                nameText.text = obj.arName;
+                ageText.text = obj.age.ToString();
             }
             // handle color changing
             meshRenderer.material.color = (selected != obj) ? inActiveColor : activeColor;
@@ -257,8 +264,11 @@ public class AR_Tap2Place : MonoBehaviour
             // store each obj we create into a list
             AR_Object aro = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
 
-            // set the description of this object, with a default value once we run past our name list
-            //aro.Description = (allObjects.Count <= objList.Length) ? objList[allObjects.Count] : "Default";
+            // set the data for this object from what we got from the url fetch
+            aro.arName = (allObjects.Count <= jData.objects.Count) ? jData.objects[allObjects.Count].name : "Default";
+            aro.id = (allObjects.Count <= jData.objects.Count) ? jData.objects[allObjects.Count].id : 0;
+            aro.age = (allObjects.Count <= jData.objects.Count) ? jData.objects[allObjects.Count].age : 0;
+
             allObjects.Add(aro);
         }
 
