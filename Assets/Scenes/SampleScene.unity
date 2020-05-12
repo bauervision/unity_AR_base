@@ -1168,7 +1168,9 @@ MonoBehaviour:
   objectToPlace: {fileID: 7439106074363962752, guid: 8565296c5de18e0409e30fa663f43c95,
     type: 3}
   countText: {fileID: 2042547985}
-  descriptionText: {fileID: 1718091364}
+  idText: {fileID: 1718091364}
+  nameText: {fileID: 165585585}
+  ageText: {fileID: 1577749885}
   activeColor: {r: 0, g: 0, b: 1, a: 1}
   inActiveColor: {r: 1, g: 0.6261432, b: 0, a: 1}
   AR_Camera: {fileID: 1482814301}

@@ -122,7 +122,6 @@ public class AR_Tap2Place : MonoBehaviour
             {
                 var data = webRequest.downloadHandler.text;
                 jData = JsonUtility.FromJson<JsonDataRaw>(data);
-
             }
         }
     }
@@ -140,6 +139,10 @@ public class AR_Tap2Place : MonoBehaviour
         if (allObjects.Count != 0)
         {
             countText.text = "Number of Objects in scene: " + allObjects.Count;
+
+            idText.text = selectedObject.id.ToString();
+            nameText.text = selectedObject.arName;
+            ageText.text = selectedObject.age.ToString();
         }
 
         if (onTouchHold)
@@ -223,11 +226,6 @@ public class AR_Tap2Place : MonoBehaviour
             {
                 onTouchHold = true;
                 selectedObject = obj;
-
-                // set the UI text to this objects data
-                idText.text = obj.id.ToString();
-                nameText.text = obj.arName;
-                ageText.text = obj.age.ToString();
             }
             // handle color changing
             meshRenderer.material.color = (selected != obj) ? inActiveColor : activeColor;
@@ -268,7 +266,6 @@ public class AR_Tap2Place : MonoBehaviour
             aro.arName = (allObjects.Count <= jData.objects.Count) ? jData.objects[allObjects.Count].name : "Default";
             aro.id = (allObjects.Count <= jData.objects.Count) ? jData.objects[allObjects.Count].id : 0;
             aro.age = (allObjects.Count <= jData.objects.Count) ? jData.objects[allObjects.Count].age : 0;
-
             allObjects.Add(aro);
         }
 
