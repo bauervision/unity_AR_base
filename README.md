@@ -10,7 +10,7 @@ So it is recommended to use Unity 2019.3.3f1.
 * UI that counts all the objects you've spawned
 * UI Button to clear them.
 * In editor customizations: spawn single mesh, delete previous when spawning
-* Select and deselect spawned objects
+* Select and deselect spawned objects, with color changing
 * UI display of data stored on the selected objects
 * WIP: fetching data from url to load on spawned objects rather than hard coding it
 
