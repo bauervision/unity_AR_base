@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.XR.ARFoundation;
-using UnityEngine.Experimental.XR;
 using UnityEngine.UI;
 using UnityEngine.XR.ARSubsystems;
 
@@ -45,6 +45,19 @@ public class AR_Tap2Place : MonoBehaviour
     [Tooltip("Do we destroy the previous mesh with each spawn?")]
     private bool deletePrevious = false;
 
+    /*  ================================================  */
+
+
+    [System.Serializable]
+    public class jsonObject
+    {
+        public int id;
+        public string name;
+        public int age;
+    }
+
+
+    /*  ================================================  */
     List<AR_Object> allObjects = new List<AR_Object>();
 
     private List<ARRaycastHit> hits = new List<ARRaycastHit>();
@@ -59,7 +72,7 @@ public class AR_Tap2Place : MonoBehaviour
     private AR_Object selectedObject;
 
     private bool onTouchHold = false;
-    private string[] objList = new string[] { "Matt", "Joanne", "Robert" };
+    private List<jsonObject> objList;
 
     public GameObject holdText;
     // Start is called before the first frame update
@@ -70,13 +83,45 @@ public class AR_Tap2Place : MonoBehaviour
         descriptionText.text = "";
         countText.text = "";
 
+        // setup fetch
+        StartCoroutine(GetRequest("https://my-json-server.typicode.com/bauervision/unity_AR_base/objects"));
+
+
         // testing
-        holdText = GameObject.Find("Hold");
-        holdText.SetActive(false);
-
-
-
+        // holdText = GameObject.Find("Hold");
+        // holdText.SetActive(false);
     }
+
+    IEnumerator GetRequest(string uri)
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
+        {
+            // Request and wait for the desired page.
+            yield return webRequest.SendWebRequest();
+
+            string[] pages = uri.Split('/');
+            int page = pages.Length - 1;
+
+            if (webRequest.isNetworkError)
+            {
+                Debug.Log(pages[page] + ": Error: " + webRequest.error);
+            }
+            else
+            {
+                var data = webRequest.downloadHandler.text;
+                Debug.Log(" data: " + data[1]);
+
+
+                //    for (int i = 0; i < data; i++)
+                //     {
+                //         objList.Add(data[i]);
+                //     }
+                //     Debug.Log(" data: " + objList);
+
+            }
+        }
+    }
+
 
 
     // Update is called once per frame
@@ -213,7 +258,7 @@ public class AR_Tap2Place : MonoBehaviour
             AR_Object aro = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
 
             // set the description of this object, with a default value once we run past our name list
-            aro.Description = (allObjects.Count <= objList.Length) ? objList[allObjects.Count] : "Default";
+            //aro.Description = (allObjects.Count <= objList.Length) ? objList[allObjects.Count] : "Default";
             allObjects.Add(aro);
         }
 
