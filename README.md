@@ -14,6 +14,16 @@ So it is recommended to use Unity 2019.3.3f1.
 * UI display of data stored on the selected objects
 * WIP: fetching data from url to load on spawned objects rather than hard coding it
 
+## WIP
+Currently working on the following features:
+* Spawn from a list of objects displayed on the UI
+* Fetch data from url to set on models for display
+* Add a ghost model so user can verify before spawning
+* Set UI to block spawn events
+* Spawn on surface of model instead of just on AR planes
+* Move spawned model over the surface
+* As AR planes are generated, save that data for reuse
+
 
 ## Setup
 * Once Unity is installed, create a new 3D project, name it whatever you want, open the project and switch it over to an Android platform in Build Settings.
