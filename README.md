@@ -8,14 +8,19 @@ So it is recommended to use Unity 2019.3.3f1.
 * All the required AR Foundation objects in place, to include the updated AR Raycast Manager which is missing from almost all the current tutorials.  
 * Simple click to place behavior script
 * UI that counts all the objects you've spawned
-* Button to clear them.
+* UI Button to clear them.
+* In editor customizations: spawn single mesh, delete previous when spawning
+* Select and deselect spawned objects
+* UI display of data stored on the selected objects
+* WIP: fetching data from url to load on spawned objects rather than hard coding it
+
 
 ## Setup
 * Once Unity is installed, create a new 3D project, name it whatever you want, open the project and switch it over to an Android platform in Build Settings.
 * Download this repo, and then copy it right overtop of your new project and replace the files.
 * You will get a couple of errors in the console, you can simply clear them after the new files have been imported.
 
-## Build the app
+## Clean up
 Now that you have the updated template copied into your project, there is a couple of small things to tidy up.
 
 ### Prep work
