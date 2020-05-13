@@ -21,6 +21,12 @@ public class AR_Tap2Place : MonoBehaviour
     [Tooltip("List of Spawnable Objects")]
     private List<AR_Object> SpawnList;
 
+
+    [SerializeField]
+    [Tooltip("Material to apply to ghost mesh prior to spawning")]
+    private Material GhostMaterial;
+
+
     [SerializeField]
     [Tooltip("Camera to use for ray casting")]
     private Camera AR_Camera = default;
@@ -95,7 +101,7 @@ public class AR_Tap2Place : MonoBehaviour
     /*  ================== Private Members ======================  */
     #region PrivateMembers
 
-    private AR_Object objectToPlace;
+    private AR_Object dynamicObjectToPlace;
     List<AR_Object> allObjects = new List<AR_Object>();
 
     private List<ARRaycastHit> hits = new List<ARRaycastHit>();
@@ -113,6 +119,8 @@ public class AR_Tap2Place : MonoBehaviour
     private List<ObjectList> objList;
 
     public GameObject holdText;
+    private AR_Object ghost;
+
     #endregion
 
 
@@ -126,7 +134,9 @@ public class AR_Tap2Place : MonoBehaviour
         StartCoroutine(GetRequest("https://my-json-server.typicode.com/bauervision/unity_AR_base/data"));
 
         // start off by assigning the first mesh in the spawn list to objectToPlace
-        objectToPlace = SpawnList[0];
+        AssignMesh(0);
+
+
 
         // testing
         // holdText = GameObject.Find("Hold");
@@ -213,7 +223,17 @@ public class AR_Tap2Place : MonoBehaviour
         UI_Options.SetActive(!UI_Options.activeInHierarchy);
     }
 
-    public void AssignMesh(int inputValue) => objectToPlace = SpawnList[inputValue];
+    public void AssignMesh(int inputValue)
+    {
+        // assign desired to mesh to both the ghost and what will be spawned
+        dynamicObjectToPlace = SpawnList[inputValue];
+        //grab the actual mesh of what will be spawned
+        Mesh newMesh = dynamicObjectToPlace.GetComponent<MeshFilter>().mesh;
+        // and update the ghost
+        placementIndicator.transform.GetChild(0).GetComponent<MeshFilter>().mesh = newMesh;
+        Debug.Log("Ghost = " + placementIndicator.transform.GetChild(0).name);
+
+    }
     #endregion
 
 
@@ -229,14 +249,13 @@ public class AR_Tap2Place : MonoBehaviour
                 Ray ray = AR_Camera.ScreenPointToRay(touch.position);
                 RaycastHit hitObject;
 
-
                 if (Physics.Raycast(ray, out hitObject))
                 {
-                    AR_Object placementObj = hitObject.transform.GetComponent<AR_Object>();
-                    if (placementObj != null)
+                    AR_Object selectedObj = hitObject.transform.GetComponent<AR_Object>();
+                    if (selectedObj != null)
                     {
-                        ChangeSelection(placementObj);
-                        HandleSelectionEvent(placementObj);
+                        ChangeSelection(selectedObj);
+                        HandleSelectionEvent(selectedObj);
                     }
                     else
                     {
@@ -291,8 +310,7 @@ public class AR_Tap2Place : MonoBehaviour
             // check to see if we have spawned our single mesh
             if (singleMesh == null)
             {
-                singleMesh = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
-
+                singleMesh = Instantiate(dynamicObjectToPlace, placementPose.position, placementPose.rotation);
                 // make sure we still count this mesh, so we can select and delete it
                 allObjects.Add(singleMesh);
             }
@@ -310,7 +328,7 @@ public class AR_Tap2Place : MonoBehaviour
                 }
             }
             // store each obj we create into a list
-            AR_Object aro = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
+            AR_Object aro = Instantiate(dynamicObjectToPlace, placementPose.position, placementPose.rotation);
 
             // set the data for this object from what we got from the url fetch
             aro.arName = (allObjects.Count <= jData.objects.Count) ? jData.objects[allObjects.Count].name : "Default";
