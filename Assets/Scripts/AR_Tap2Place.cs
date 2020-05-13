@@ -120,6 +120,7 @@ public class AR_Tap2Place : MonoBehaviour
 
     public GameObject holdText;
     private AR_Object ghost;
+    private bool showGhost = false;
 
     #endregion
 
@@ -221,6 +222,12 @@ public class AR_Tap2Place : MonoBehaviour
     public void ToggleOptionsUI()
     {
         UI_Options.SetActive(!UI_Options.activeInHierarchy);
+    }
+
+
+    public void ToggleShowGhost(bool isChecked)
+    {
+        placementIndicator.transform.GetChild(0).gameObject.SetActive(isChecked);
     }
 
     public void AssignMesh(int inputValue)
