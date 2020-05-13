@@ -8,6 +8,11 @@ using UnityEngine.XR.ARSubsystems;
 
 public class AR_Tap2Place : MonoBehaviour
 {
+    // =====================================
+    #region GeneralSettings
+
+
+    [Header("General Spawning Objects")]
     [SerializeField]
     [Tooltip("Shown when a surface has been detected as the orgin for spawning")]
     private GameObject placementIndicator;
@@ -16,6 +21,22 @@ public class AR_Tap2Place : MonoBehaviour
     [Tooltip("Mesh to spawn on surface")]
     private AR_Object objectToPlace;
 
+    [SerializeField]
+    [Tooltip("Camera to use for ray casting")]
+    private Camera AR_Camera = default;
+
+    [SerializeField]
+    [Tooltip("Do we limit spawning to a single mesh?")]
+    private bool isSingleSpawn = false;
+
+    [SerializeField]
+    [Tooltip("Do we destroy the previous mesh with each spawn?")]
+    private bool deletePrevious = false;
+
+    #endregion
+    // =====================================
+    #region UIfields
+    [Header("UI Fields")]
     [SerializeField]
     [Tooltip("UI Element to target for updates")]
     public Text countText;
@@ -30,7 +51,18 @@ public class AR_Tap2Place : MonoBehaviour
     [Tooltip("UI Element to target for object AGE display")]
     public Text ageText;
 
+    [SerializeField]
+    [Tooltip("UI Element to target for toggling spawning options")]
+    public GameObject spawningOptions;
 
+    [SerializeField]
+    [Tooltip("UI Element to target for toggling ui options")]
+    public GameObject UI_Options;
+
+    #endregion
+    // =====================================
+    #region SelectionSpecifics
+    [Header("Selection Settings")]
     [SerializeField]
     [Tooltip("Active Color for Selected Objects")]
     private Color activeColor = Color.blue;
@@ -39,38 +71,30 @@ public class AR_Tap2Place : MonoBehaviour
     [Tooltip("InActive Color for De-Selected Objects")]
     private Color inActiveColor = Color.red;
 
-    [SerializeField]
-    [Tooltip("Camera to use for ray casting")]
-    private Camera AR_Camera = default;
-
-    [SerializeField]
-    [Tooltip("Do we limit spawning to a single mesh?")]
-    private bool isSingleSpawn = false;
-
-    [SerializeField]
-    [Tooltip("Do we destroy the previous mesh with each spawn?")]
-    private bool deletePrevious = false;
-
-    /*  ================================================  */
-
+    #endregion
+    /*  =============== JSON related =====================  */
+    #region JSONrelated
     [System.Serializable]
-    public class JsonDataRaw
+    private class JsonDataRaw
     {
         public List<ObjectList> objects;
     }
 
 
     [System.Serializable]
-    public class ObjectList
+    private class ObjectList
     {
         public int id;
         public string name;
         public int age;
     }
 
-
     private JsonDataRaw jData;
-    /*  ================================================  */
+    #endregion
+
+    /*  ================== Private Members ======================  */
+    #region PrivateMembers
+
     List<AR_Object> allObjects = new List<AR_Object>();
 
     private List<ARRaycastHit> hits = new List<ARRaycastHit>();
@@ -88,13 +112,15 @@ public class AR_Tap2Place : MonoBehaviour
     private List<ObjectList> objList;
 
     public GameObject holdText;
+    #endregion
+
+
     // Start is called before the first frame update
     void Start()
     {
         arOrigin = FindObjectOfType<ARSessionOrigin>();
-        // clear out all the UI text fields
-        countText.text = "";
-
+        // handle all UI initializations
+        InitializeUI();
         // setup fetch
         StartCoroutine(GetRequest("https://my-json-server.typicode.com/bauervision/unity_AR_base/data"));
 
@@ -104,6 +130,13 @@ public class AR_Tap2Place : MonoBehaviour
         // holdText.GetComponent<Text>().text = jData.objectList[0].name;
     }
 
+    private void InitializeUI()
+    {
+        countText.text = "";
+        spawningOptions.SetActive(false);
+        UI_Options.SetActive(false);
+
+    }
     IEnumerator GetRequest(string url)
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
@@ -125,8 +158,6 @@ public class AR_Tap2Place : MonoBehaviour
             }
         }
     }
-
-
 
     // Update is called once per frame
     void Update()
@@ -156,7 +187,9 @@ public class AR_Tap2Place : MonoBehaviour
 
     }
 
-    // called from the UI button
+    // all of these methods will be called from buttons on the UI
+    #region UI_methods
+
     public void ClearScene()
     {
         foreach (AR_Object obj in allObjects)
@@ -166,6 +199,21 @@ public class AR_Tap2Place : MonoBehaviour
         allObjects.Clear();
 
     }
+
+    public void ToggleSpawningUI()
+    {
+        spawningOptions.SetActive(!spawningOptions.activeInHierarchy);
+    }
+
+    public void ToggleOptionsUI()
+    {
+        UI_Options.SetActive(!UI_Options.activeInHierarchy);
+    }
+
+
+
+    #endregion
+
 
     private void HandleSelectionDetection()
     {
