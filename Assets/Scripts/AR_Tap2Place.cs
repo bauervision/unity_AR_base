@@ -18,8 +18,8 @@ public class AR_Tap2Place : MonoBehaviour
     private GameObject placementIndicator;
 
     [SerializeField]
-    [Tooltip("Mesh to spawn on surface")]
-    private AR_Object objectToPlace;
+    [Tooltip("List of Spawnable Objects")]
+    private List<AR_Object> SpawnList;
 
     [SerializeField]
     [Tooltip("Camera to use for ray casting")]
@@ -95,6 +95,7 @@ public class AR_Tap2Place : MonoBehaviour
     /*  ================== Private Members ======================  */
     #region PrivateMembers
 
+    private AR_Object objectToPlace;
     List<AR_Object> allObjects = new List<AR_Object>();
 
     private List<ARRaycastHit> hits = new List<ARRaycastHit>();
@@ -124,6 +125,8 @@ public class AR_Tap2Place : MonoBehaviour
         // setup fetch
         StartCoroutine(GetRequest("https://my-json-server.typicode.com/bauervision/unity_AR_base/data"));
 
+        // start off by assigning the first mesh in the spawn list to objectToPlace
+        objectToPlace = SpawnList[0];
 
         // testing
         // holdText = GameObject.Find("Hold");
@@ -210,8 +213,7 @@ public class AR_Tap2Place : MonoBehaviour
         UI_Options.SetActive(!UI_Options.activeInHierarchy);
     }
 
-
-
+    public void AssignMesh(int inputValue) => objectToPlace = SpawnList[inputValue];
     #endregion
 
 
