@@ -11,19 +11,17 @@ So it is recommended to use Unity 2019.3.3f1.
 * UI Button to clear them.
 * In editor customizations: spawn single mesh, delete previous when spawning
 * Select and deselect spawned objects, with color changing
+* Select and Move spawned model over the surface
 * UI display of data stored on the selected objects
-* WIP: fetching data from url to load on spawned objects rather than hard coding it
+* Fetching data from url to load on spawned objects rather than hard coding it. (Basically fetching data from the db.json stored here.)
+* Spawn from a list of objects displayed on the UI
+* Toggle a ghost model so user can verify mesh before spawning
 
 ## WIP
 Currently working on the following features:
-* Spawn from a list of objects displayed on the UI
-* Fetch data from url to set on models for display
-* Add a ghost model so user can verify before spawning
 * Set UI to block spawn events
 * Spawn on surface of model instead of just on AR planes
-* Move spawned model over the surface
 * As AR planes are generated, save that data for reuse
-
 
 ## Setup
 * Once Unity is installed, create a new 3D project, name it whatever you want, open the project and switch it over to an Android platform in Build Settings.
