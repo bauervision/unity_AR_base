@@ -2,7 +2,7 @@
 Simple starting point for AR apps
 
 This project uses AR Foundation, and is built off their samples for initial setup.  
-So it is recommended to use Unity 2019.3.3f1.
+So it is recommended to use at least Unity 2019.3.3f1.
 
 ## What it includes
 * All the required AR Foundation objects in place, to include the updated AR Raycast Manager which is missing from almost all the current tutorials.  
