@@ -139,8 +139,6 @@ public class AR_Tap2Place : MonoBehaviour
         // start off by assigning the first mesh in the spawn list to objectToPlace
         AssignMesh(0);
 
-
-
         // testing
         // holdText = GameObject.Find("Hold");
         // holdText.GetComponent<Text>().text = jData.objectList[0].name;
@@ -148,6 +146,7 @@ public class AR_Tap2Place : MonoBehaviour
 
     private void InitializeUI()
     {
+        // start clean with everything hidden
         countText.text = "";
         spawningOptions.SetActive(false);
         UI_Options.SetActive(false);
@@ -180,6 +179,8 @@ public class AR_Tap2Place : MonoBehaviour
     {
         UpdatePlacementPose();
         UpdatePlacementIndicator();
+
+        // make sure we don't have any UI elements visible
         if (!isUIBlocking)
         {
             HandleSelectionDetection();
@@ -201,10 +202,8 @@ public class AR_Tap2Place : MonoBehaviour
             handleDragging();
         }
 
-
         // testing
         holdText.SetActive(onTouchHold);
-
     }
 
     // all of these methods will be called from buttons on the UI
