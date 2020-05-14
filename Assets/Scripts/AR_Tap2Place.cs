@@ -122,6 +122,8 @@ public class AR_Tap2Place : MonoBehaviour
     private AR_Object ghost;
     private bool showGhost = false;
 
+    private bool isUIBlocking = false;
+
     #endregion
 
 
@@ -178,7 +180,11 @@ public class AR_Tap2Place : MonoBehaviour
     {
         UpdatePlacementPose();
         UpdatePlacementIndicator();
-        HandleSelectionDetection();
+        if (!isUIBlocking)
+        {
+            HandleSelectionDetection();
+        }
+
 
         // keep our counter updated with list total once we have something to count
         if (allObjects.Count != 0)
@@ -217,11 +223,18 @@ public class AR_Tap2Place : MonoBehaviour
     public void ToggleSpawningUI()
     {
         spawningOptions.SetActive(!spawningOptions.activeInHierarchy);
+        isUIBlocking = spawningOptions.activeInHierarchy;
+        // if the other UI window was opened, close it
+        UI_Options.SetActive(UI_Options.activeInHierarchy && false);
     }
 
     public void ToggleOptionsUI()
     {
         UI_Options.SetActive(!UI_Options.activeInHierarchy);
+        isUIBlocking = UI_Options.activeInHierarchy;
+        // if the other UI window was opened, close it
+        spawningOptions.SetActive(spawningOptions.activeInHierarchy && false);
+
     }
 
 
