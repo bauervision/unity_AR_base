@@ -2,7 +2,7 @@
 Simple starting point for AR apps
 
 This project uses AR Foundation, and is built off their samples for initial setup.  
-So it is recommended to use Unity 2019.3.3f1.
+So it is recommended to use at least Unity 2019.3.3f1.
 
 ## What it includes
 * All the required AR Foundation objects in place, to include the updated AR Raycast Manager which is missing from almost all the current tutorials.  
@@ -16,12 +16,8 @@ So it is recommended to use Unity 2019.3.3f1.
 * Fetching data from url to load on spawned objects rather than hard coding it. (Basically fetching data from the db.json stored here.)
 * Spawn from a list of objects displayed on the UI
 * Toggle a ghost model so user can verify mesh before spawning
+* Ui blocking to prevent spawning when interacting with the Ui.
 
-## WIP
-Currently working on the following features:
-* Set UI to block spawn events
-* Spawn on surface of model instead of just on AR planes
-* As AR planes are generated, save that data for reuse
 
 ## Setup
 * Once Unity is installed, create a new 3D project, name it whatever you want, open the project and switch it over to an Android platform in Build Settings.
